@@ -4,9 +4,10 @@ from typing import Tuple
 from src.domain.auth.services.jwt_service import JwtService
 from src.domain.auth.services.hasher_service import HasherService
 from src.domain.auth.repositories.user_repository import UserRepository
-from src.domain.auth.dtos import TokenPairDTO, Token, TokenData, UserDTO
+from src.domain.auth.dtos import TokenPairDTO, Token, TokenData
 from src.domain.auth.entities.user import User
 from .exceptions import UserDoesntExist, InvalidPassword
+from ...dtos.auth import UserDTO
 
 
 class LoginUserUseCase:
