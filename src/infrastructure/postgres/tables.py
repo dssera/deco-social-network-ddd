@@ -34,6 +34,7 @@ from sqlalchemy import (
     UniqueConstraint,
     select,
     func,
+    text
 )
 from sqlalchemy.orm import (
     Mapped, 
@@ -148,7 +149,7 @@ class PagesFollowersModel(BaseModel):
     page_id: Mapped[UUID] = mapped_column(
         ForeignKey('pages.id', ondelete='CASCADE'))
     created_at: Mapped[datetime] = mapped_column(
-        default=func.now)
+        default=func.now, server_default=text("CURRENT_TIMESTAMP"), index=True)
     
     follower: Mapped["UserModel"] = relationship(
         back_populates="follower_page_links")
@@ -163,7 +164,10 @@ class PagesRequestsModel(BaseModel):
     page_id: Mapped[UUID] = mapped_column(
         ForeignKey('pages.id', ondelete='CASCADE'))
     created_at: Mapped[datetime] = mapped_column(
-        default=func.now)
+        default=func.now, 
+        server_default=text("CURRENT_TIMESTAMP"), 
+        index=True
+        )
     
     requester: Mapped["UserModel"] = relationship(
         back_populates="requester_page_links")
@@ -184,12 +188,18 @@ class PagesTagsModel(Base):
         back_populates="tag_page_links")
     
 
-class PostModel(BaseModel):
+class PostModel(Base):
     __tablename__ = 'posts'
+    id: Mapped[UUID] = mapped_column(
+        primary_key=True, index=True, unique=True, default=uuid4()
+    )
     title: Mapped[str] = mapped_column(String(1024))
     body: Mapped[str] = mapped_column(String(16384))
     created_at: Mapped[datetime] = mapped_column(
-        default=func.now, index=True)
+        default=func.now, 
+        index=True, 
+        server_default=text("CURRENT_TIMESTAMP"),
+        )
     
     page_id: Mapped[UUID] = mapped_column(
         ForeignKey('pages.id', ondelete='CASCADE'))

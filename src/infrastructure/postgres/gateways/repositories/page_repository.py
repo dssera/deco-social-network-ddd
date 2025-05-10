@@ -3,7 +3,7 @@ from typing import List
 
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
-from sqlalchemy.ext.asyncio import AsyncConnection
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.domain.common.unit_of_work import UnitOfWork
 from src.domain.pages.repositories.page_repository import (
@@ -16,16 +16,16 @@ from ...converters.model_to_entity import model_to_page_entity
 class PageRepositoryImpl(PageRepository):
     def __init__(
             self, 
-            connection: AsyncConnection, 
+            session: AsyncSession, 
             uow: UnitOfWork
             ) -> None:
-        self.connection = connection
+        self.session = session
         self.uow = uow
 
     # async def upload_page():
     #     ...
 
-    async def load_all_by_user_id(
+    async def get_all_by_user_id(
         self, 
         user_id: UUID,
         tag: str | None = None,
@@ -44,8 +44,8 @@ class PageRepositoryImpl(PageRepository):
             #     joinedload(PageModel.owner)
             #     )
         )
-        result = await self.connection.execute(stmt)
-        page_models: List[PageModel] = result.all()
+        result = await self.session.execute(stmt)
+        page_models: List[PageModel] = list(result.scalars())
         print("from repo: ", page_models)
         return model_to_page_entity(page_models, self.uow)
 

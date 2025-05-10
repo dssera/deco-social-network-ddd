@@ -1,4 +1,4 @@
-from sqlalchemy.ext.asyncio import AsyncConnection
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from ...protocols.data_mapper import DataMapper
 from src.domain.pages.entities.page import Page
@@ -6,9 +6,9 @@ from src.domain.pages.entities.page import Page
 class PageDataMapper(DataMapper[Page]):
     def __init__(
             self,
-            connection: AsyncConnection
+            session: AsyncSession
             ):
-        self.connection = connection
+        self.connection = session
         
     async def add(self, entity: Page) -> None:
         raise NotImplementedError("Not impl yet.")

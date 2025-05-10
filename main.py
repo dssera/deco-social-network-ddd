@@ -8,6 +8,7 @@ from fastapi.responses import RedirectResponse
 from src.entrypoint.main import app_factory
 from src.presentation.api.controllers.page_router import pages_router
 from src.presentation.api.controllers.auth_router import auth_router
+from src.presentation.api.controllers.post_router import posts_router
 
 app = app_factory()
 
@@ -29,6 +30,8 @@ async def healthcheck():
 app.include_router(api_router)
 app.include_router(pages_router)
 app.include_router(auth_router)
+app.include_router(posts_router)
+
 
 if __name__ == '__main__':
-    uvicorn.run("main:app", host="127.0.0.1", port=8002, reload=True)
+    uvicorn.run("main:app", host="127.0.0.1", port=8001, reload=True)

@@ -5,7 +5,9 @@ from fastapi import FastAPI
 from src.entrypoint.di.providers.postgres import PostgresDatabaseProvider
 from src.entrypoint.di.providers.auth import AuthDomainProvider
 from src.entrypoint.di.providers.pages import PagesDomainProvider
-from .handlers import HandlersProvider
+from src.entrypoint.di.providers.posts import PostsDomainProvider
+from src.entrypoint.di.providers.handlers import HandlersProvider
+
 
 
 def setup_container() -> AsyncContainer:
@@ -14,6 +16,7 @@ def setup_container() -> AsyncContainer:
         AuthDomainProvider(),
         PagesDomainProvider(),
         HandlersProvider(),
+        PostsDomainProvider(),
     )
 
 

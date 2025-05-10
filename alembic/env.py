@@ -5,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from src.common import models
+from src.infrastructure.postgres import tables
 from src.config.db_settings import SYNC_DATABASE_URL
 
 
@@ -21,7 +21,7 @@ if config.config_file_name is not None:
 
 config.set_main_option("sqlalchemy.url", SYNC_DATABASE_URL)
 
-target_metadata = models.Base.metadata
+target_metadata = tables.Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

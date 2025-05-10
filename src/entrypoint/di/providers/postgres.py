@@ -1,6 +1,10 @@
 from collections.abc import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import AsyncEngine, AsyncConnection
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine, 
+    AsyncSession,
+    async_sessionmaker
+    )
 
 from dishka import Provider, provide, Scope
 
@@ -36,32 +40,36 @@ class PostgresDatabaseProvider(Provider):
     ) -> AsyncEngine:
         return engine
 
-    @provide(scope=Scope.REQUEST, provides=AsyncConnection)
+    @provide(scope=Scope.REQUEST, provides=AsyncSession)
     async def provide_postgres_connection(
         self,
         engine: AsyncEngine,
-    ) -> AsyncGenerator[AsyncConnection, None]:
-        async with engine.begin() as connection:
-            yield connection
+    ) -> AsyncGenerator[AsyncSession, None]:
+        async_session_factory = async_sessionmaker(
+        bind=engine,
+        expire_on_commit=False,
+        )
+        async with async_session_factory() as session:
+            yield session
 
 
     @provide(scope=Scope.REQUEST)
     def provide_unit_of_work(
-        self, connection: AsyncConnection, registry: Registry
+        self, session: AsyncSession, registry: Registry
     ) -> UnitOfWork:
         return UnitOfWorkImpl(
             registry=registry, 
-            connection=connection
+            session=session
             )
     
-    @provide(scope=Scope.REQUEST)
-    def provide_unit_of_work(
-        self, connection: AsyncConnection, registry: Registry
-    ) -> UnitOfWork:
-        return UnitOfWorkImpl(
-            registry=registry, 
-            connection=connection
-            )
+    # @provide(scope=Scope.REQUEST)
+    # def provide_unit_of_work(
+    #     self, connection: AsyncSession, registry: Registry
+    # ) -> UnitOfWork:
+    #     return UnitOfWorkImpl(
+    #         registry=registry, 
+    #         session=connection
+    #         )
     
     @provide(scope=Scope.REQUEST)
     def provide_registry(
@@ -74,6 +82,6 @@ class PostgresDatabaseProvider(Provider):
     @provide(scope=Scope.REQUEST)
     def provide_requisite_data_mapper(
         self, 
-        connection: AsyncConnection
+        session: AsyncSession
     ) -> DataMapper[Page]:
-        return PageDataMapper(connection)
+        return PageDataMapper(session)

@@ -11,10 +11,9 @@ from fastapi.responses import Response
 from src.application.commands.auth.use_cases import (
     LoginUserUseCase,
     LogoutUserUseCase,
-    GetCurrentUserUseCase,
     RefreshAccessTokenUseCase
     )
-from src.domain.auth.dtos import TokenPairDTO, Token
+from src.domain.auth.dtos import Token
 
 
 auth_router = APIRouter(prefix="/auth")

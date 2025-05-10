@@ -3,17 +3,17 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from dishka import Provider, provide, Scope
 
 from src.domain.common.unit_of_work import UnitOfWork
-from src.domain.pages.repositories.page_repository import PageRepository
-from src.infrastructure.postgres.gateways.repositories.page_repository import PageRepositoryImpl
+from src.domain.posts.repositories.post_repository import PostRepository
+from src.infrastructure.postgres.gateways.repositories.post_repository import PostRepositoryImpl
 
 
-class PagesDomainProvider(Provider):
+class PostsDomainProvider(Provider):
 
     @provide(scope=Scope.REQUEST)
-    def provide_page_repository(
+    def provide_post_repository(
             self, session: AsyncSession, unit_of_work: UnitOfWork
-    ) -> PageRepository:
-        return PageRepositoryImpl(session, unit_of_work)
+    ) -> PostRepository:
+        return PostRepositoryImpl(session, unit_of_work)
     
     
     # @provide(scope=Scope.REQUEST)

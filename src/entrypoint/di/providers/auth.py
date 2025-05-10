@@ -1,4 +1,4 @@
-from sqlalchemy.ext.asyncio import AsyncConnection
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from dishka import Provider, provide, Scope
 
@@ -19,9 +19,9 @@ class AuthDomainProvider(Provider):
 
     @provide(scope=Scope.REQUEST)
     def provide_user_repository(
-            self, connection: AsyncConnection, unit_of_work: UnitOfWork
+            self, session: AsyncSession, unit_of_work: UnitOfWork
     ) -> UserRepository:
-        return UserRepositoryImpl(connection, unit_of_work)
+        return UserRepositoryImpl(session, unit_of_work)
     
     @provide(scope=Scope.REQUEST)
     def provide_jwt_service(

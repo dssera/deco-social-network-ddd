@@ -17,7 +17,7 @@ class LoadPagesUseCase:
         user_id: UUID,
         **filters,
     ):
-        pages: List[Page] = await self.page_repository.load_all_by_user_id(
+        pages: List[Page] = await self.page_repository.get_all_by_user_id(
             user_id, 
             **filters
             )

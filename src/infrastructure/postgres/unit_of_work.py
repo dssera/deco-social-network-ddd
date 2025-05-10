@@ -1,6 +1,6 @@
 from typing import List, DefaultDict
 
-from sqlalchemy.ext.asyncio import AsyncConnection
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.domain.common.unit_of_work import UnitOfWork
 from src.domain.common.uowed import UowedEntity
@@ -11,13 +11,13 @@ class UnitOfWorkImpl(UnitOfWork):
     def __init__(
         self,
         registry: Registry,
-        connection: AsyncConnection,
+        session: AsyncSession,
     ) -> None:
         self.new: dict[type[UowedEntity], list[UowedEntity]] = DefaultDict(list)
         self.dirty: dict[type[UowedEntity], list[UowedEntity]] = DefaultDict(list)
         self.deleted: dict[type[UowedEntity], list[UowedEntity]] = DefaultDict(list)
         self.registry = registry
-        self.connection = connection
+        self.session = session
 
     def register_new(self, entity: UowedEntity) -> None:
         self.new[type(entity)].append(entity)
@@ -47,4 +47,4 @@ class UnitOfWorkImpl(UnitOfWork):
                 for entity in entities:
                     await mapper.delete(entity)
 
-        await self.connection.commit()
+        await self.session.commit()

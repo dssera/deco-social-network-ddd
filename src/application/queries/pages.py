@@ -18,7 +18,7 @@ class GetPagesUseCase:
             user_id: UUID,
             **filters,
             ) -> List[PageDTO]:
-        entities: List[Page] = await self.page_repository.load_all_by_user_id(
+        entities: List[Page] = await self.page_repository.get_all_by_user_id(
             user_id, **filters)
         return [PageDTO.model_validate(e) for e in entities]
     

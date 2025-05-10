@@ -3,7 +3,7 @@ from typing import List
 
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
-from sqlalchemy.ext.asyncio import AsyncConnection
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.domain.common.unit_of_work import UnitOfWork
 from src.domain.auth.repositories.user_repository import (
@@ -16,10 +16,10 @@ from ...converters.model_to_entity import model_to_user_entity
 class UserRepositoryImpl(UserRepository):
     def __init__(
             self, 
-            connection: AsyncConnection, 
+            session: AsyncSession, 
             uow: UnitOfWork
             ) -> None:
-        self.connection = connection
+        self.session = session
         self.uow = uow
 
     # async def upload_page():
@@ -30,14 +30,14 @@ class UserRepositoryImpl(UserRepository):
         username: str
         ) -> User | None:
         stmt = select(UserModel).where(UserModel.username == username)
-        result = await self.connection.execute(stmt)
-        user_model = result.one_or_none()
+        result = await self.session.execute(stmt)
+        user_model = result.scalar_one_or_none()
         if not user_model:
             return None
         
         stmt = select(UserDataModel).where(UserDataModel.user_id == user_model.id)
-        result = await self.connection.execute(stmt)
-        user_data_model = result.one_or_none()
+        result = await self.session.execute(stmt)
+        user_data_model = result.scalar_one_or_none()
 
         return model_to_user_entity(
             user_model, 
