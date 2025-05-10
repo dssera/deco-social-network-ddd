@@ -14,6 +14,8 @@ from src.infrastructure.services.auth.hasher_service import HasherServiceImpl
 from src.domain.auth.services.jwt_service import JwtService
 from src.infrastructure.services.auth.jwt_service import JwtServiceImpl
 
+from application.dtos.auth import UserDTO
+
 
 class AuthDomainProvider(Provider):
 

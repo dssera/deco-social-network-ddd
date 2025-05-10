@@ -14,6 +14,7 @@ from src.application.commands.auth.use_cases import (
     RefreshAccessTokenUseCase
     )
 from src.domain.auth.dtos import Token
+from .aliases import security_user_annotation
 
 
 auth_router = APIRouter(prefix="/auth")
@@ -25,7 +26,7 @@ async def login(
     response: Response,
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     use_case: FromDishka[LoginUserUseCase],
-) -> Tuple[Token, UUID]:
+) -> Token:
     access_token, refresh_token = await use_case.handle(form_data.username, 
                                  form_data.password)
     response.set_cookie(
@@ -35,13 +36,14 @@ async def login(
         secure=True,
         samesite="strict"
     )
-    return access_token, refresh_token
+    return access_token # , refresh_token
 
 @auth_router.post("/logout")
 @inject
 async def logout(
     request: Request,
     use_case: FromDishka[LogoutUserUseCase],
+    _: security_user_annotation
 ) -> dict:
     refresh_token = request.cookies.get("refresh_token")
     return await use_case.handle(refresh_token)
