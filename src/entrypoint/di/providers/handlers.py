@@ -5,11 +5,14 @@ from src.application.commands.auth.use_cases import (
     LoginUserUseCase, 
     LogoutUserUseCase, 
     GetCurrentUserUseCase, 
-    RefreshAccessTokenUseCase
+    RefreshAccessTokenUseCase,
     )
 from src.application.queries.posts import GetPostsUseCase
 from src.application.commands.pages.use_cases import AddPageUseCase
-from src.application.commands.posts.use_cases import AddPostUseCase
+from src.application.commands.posts.use_cases import (
+    AddPostUseCase, 
+    DeletePostUseCase,
+    )
 
 
 
@@ -24,4 +27,5 @@ class HandlersProvider(Provider):
     get_posts_use_case = provide(GetPostsUseCase)
     add_page_use_case = provide(AddPageUseCase)
     add_post_use_case = provide(AddPostUseCase)
+    delete_post_use_case = provide(DeletePostUseCase)
 

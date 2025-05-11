@@ -32,15 +32,18 @@ def model_to_page_entity(model: Union[PageModel, List[PageModel]], uow: UnitOfWo
 
 def model_to_post_entity(model: Union[PostModel, List[PostModel]], uow: UnitOfWork):
     def model_to_entity_single(model: PostModel, uow: UnitOfWork):
-        return Post(
+        post = Post(
             id=model.id,
             uow=uow,
             title=model.title,
             body=model.body,
             created_at=model.created_at,
             page_id=model.page_id,
-            page=model_to_page_entity(model.page, uow),
         )
+        if post.page is not None:
+            post.page=model_to_page_entity(model.page, uow)
+        return post
+    
     if isinstance(model, list):
         return [model_to_entity_single(m, uow) for m in model]
     else:

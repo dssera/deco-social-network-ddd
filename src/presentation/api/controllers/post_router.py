@@ -1,4 +1,4 @@
-from typing import List, Annotated
+from typing import List, Annotated, Dict
 from uuid import UUID
 
 from dishka import FromDishka
@@ -8,7 +8,7 @@ from fastapi import APIRouter
 
 from src.application.queries.posts import GetPostsUseCase
 from src.application.dtos.post import PostDTO, PostInDTO, PostPlainDTO
-from src.application.commands.posts.use_cases import AddPostUseCase
+from src.application.commands.posts.use_cases import AddPostUseCase, DeletePostUseCase
 from .aliases import security_user_annotation
 
 
@@ -39,3 +39,13 @@ async def add_post(
 ) -> PostPlainDTO:
     post = await use_case.handle(post, page_id)
     return post
+
+@posts_router.delete("")
+@inject
+async def delete_post(
+    post_id: UUID,
+    use_case: FromDishka[DeletePostUseCase],
+    _: security_user_annotation,
+) -> Dict[str, PostPlainDTO]:
+    deleted_post = await use_case.handle(post_id)
+    return {"deleted_post": deleted_post}

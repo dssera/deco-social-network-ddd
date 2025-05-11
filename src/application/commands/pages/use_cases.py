@@ -10,10 +10,8 @@ from src.domain.common.unit_of_work import UnitOfWork
 class AddPageUseCase:
     def __init__(
             self,
-            page_data_mapper: DataMapper[Page],
             uow: UnitOfWork,
             ):
-        self.page_data_mapper = page_data_mapper
         self.uow = uow
 
     async def handle(

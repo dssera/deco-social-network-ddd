@@ -23,9 +23,6 @@ class PostRepositoryImpl(PostRepository):
         self.session = session
         self.uow = uow
 
-    # async def upload_page():
-    #     ...
-
     async def get_all(
         self, 
         limit: int = 10,
@@ -42,3 +39,15 @@ class PostRepositoryImpl(PostRepository):
             result = await self.session.execute(stmt)
             posts = list(result.scalars())
             return model_to_post_entity(posts, self.uow)
+    
+    async def get_one_or_none(
+        self, 
+        post_id: UUID
+        ) -> Post | None:
+        stmt = (
+             select(PostModel)
+             .where(PostModel.id == post_id)
+        )
+        result = await self.session.execute(stmt)
+        post = result.scalar_one_or_none()
+        return model_to_post_entity(post, self.uow)
