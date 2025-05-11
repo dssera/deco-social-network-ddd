@@ -38,7 +38,8 @@ def model_to_post_entity(model: Union[PostModel, List[PostModel]], uow: UnitOfWo
             title=model.title,
             body=model.body,
             created_at=model.created_at,
-            page=model_to_page_entity(model.page, uow)
+            page_id=model.page_id,
+            page=model_to_page_entity(model.page, uow),
         )
     if isinstance(model, list):
         return [model_to_entity_single(m, uow) for m in model]

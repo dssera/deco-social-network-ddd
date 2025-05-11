@@ -14,12 +14,14 @@ class Post(UowedEntity[UUID]):
             title: str,
             body: str,
             created_at: datetime,
-            page: Page | None
+            page_id: UUID,
+            page: Page | None = None
             ) -> None:
         super().__init__(uow, id)
         self.title=title
         self.body=body
         self.created_at=created_at
+        self.page_id = page_id
         self.page = page
         self.mark_new()
     

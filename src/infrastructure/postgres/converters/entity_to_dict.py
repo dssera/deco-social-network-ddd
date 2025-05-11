@@ -30,6 +30,7 @@ def post_entity_to_dict(entity: Union[Post, List[Post]]):
             "title": entity.title,
             "body": entity.body,
             "created_at": entity.created_at,
+            "page_id": entity.page_id,
         }
             
     if isinstance(entity, list):
