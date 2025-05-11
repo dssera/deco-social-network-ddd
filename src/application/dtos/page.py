@@ -13,3 +13,12 @@ class PageDTO(BaseModel):
     is_private: bool
     user_id: UUID
     unblock_date: datetime | None = None
+
+class PageInDTO(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    name: str
+    about: str
+    is_private: bool = False
+    unblock_date: datetime | None = None
+    

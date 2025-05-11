@@ -9,14 +9,14 @@ from src.domain.pages.entities.page import Page
 class Post(UowedEntity[UUID]):
     def __init__(
             self, 
-            post_id: UUID,
+            id: UUID,
             uow: UnitOfWork, 
             title: str,
             body: str,
             created_at: datetime,
             page: Page | None
             ) -> None:
-        super().__init__(uow, post_id)
+        super().__init__(uow, id)
         self.title=title
         self.body=body
         self.created_at=created_at

@@ -30,6 +30,7 @@ class UnitOfWorkImpl(UnitOfWork):
 
     async def commit(self) -> None:
         for entity_type, entities in self.new.items():
+            print("ALL TRACKED ENTITIES IN UOW:", entities)
             if entities:
                 mapper = self.registry.get_mapper(entity_type)
                 for entity in entities:

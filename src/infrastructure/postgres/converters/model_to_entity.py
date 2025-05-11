@@ -17,7 +17,7 @@ def model_to_page_entity(model: Union[PageModel, List[PageModel]], uow: UnitOfWo
     def model_to_entity_single(model: PageModel, uow: UnitOfWork):
         print(model)
         return Page(
-            page_id=model.id,
+            id=model.id,
             uow=uow,
             name=model.name,
             about=model.about,
@@ -33,7 +33,7 @@ def model_to_page_entity(model: Union[PageModel, List[PageModel]], uow: UnitOfWo
 def model_to_post_entity(model: Union[PostModel, List[PostModel]], uow: UnitOfWork):
     def model_to_entity_single(model: PostModel, uow: UnitOfWork):
         return Post(
-            post_id=model.id,
+            id=model.id,
             uow=uow,
             title=model.title,
             body=model.body,
@@ -51,12 +51,12 @@ def model_to_user_entity(
         uow: UnitOfWork
         ) -> User:
     return User(
-        user_id=user.id,
+        id=user.id,
         uow=uow,
         username=user.username,
         password=user.password,
         unblock_date=user.unblock_date,
-        role=user.roll,
+        role=user.role,
         email=user_data.email,
         tg_nickname=user_data.tg_nickname
     )

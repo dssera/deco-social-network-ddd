@@ -87,7 +87,7 @@ class UserModel(BaseModel):
     )
     password: Mapped[str] = mapped_column(String(155))
     unblock_date: Mapped[Optional[datetime]]
-    roll: Mapped[RoleEnum]
+    role: Mapped[RoleEnum]
 
     user_data: Mapped["UserDataModel"] = relationship(
         back_populates='user')

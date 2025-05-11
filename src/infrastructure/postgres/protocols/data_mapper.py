@@ -1,5 +1,7 @@
 from abc import abstractmethod
 from typing import Protocol
+from src.domain.common.unit_of_work import UnitOfWork
+
 
 
 class DataMapper[Entity](Protocol):

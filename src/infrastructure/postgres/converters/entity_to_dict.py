@@ -9,7 +9,7 @@ from src.domain.common.unit_of_work import UnitOfWork
 def page_entity_to_dict(entity: Union[Page, List[Page]]):
     def entity_to_dict_single(entity: Page):
         return {
-            # "id": entity.id,
+            "id": entity.id,
             "name": entity.name,
             "about": entity.about,
             "is_private": entity.is_private,
@@ -26,7 +26,7 @@ def page_entity_to_dict(entity: Union[Page, List[Page]]):
 def post_entity_to_dict(entity: Union[Post, List[Post]]):
     def entity_to_dict_single(entity: Post):
         return {
-            # "id": entity.id,
+            "id": entity.id,
             "title": entity.title,
             "body": entity.body,
             "created_at": entity.created_at,
@@ -41,13 +41,13 @@ def post_entity_to_dict(entity: Union[Post, List[Post]]):
 def user_entity_to_dict(entity: Union[User, List[User]]):
     def entity_to_dict_single(entity: User):
         return {
-            # "id": entity.id,
+            "id": entity.id,
             "username": entity.username,
             "password": entity.password,
             "unblock_date": entity.unblock_date,
-            "role": entity.roll,
-            "email": entity.email,
-            "tg_nickname": entity.tg_nickname
+            "role": entity.role,
+            # "email": entity.email,
+            # "tg_nickname": entity.tg_nickname
         }
             
     if isinstance(entity, list):

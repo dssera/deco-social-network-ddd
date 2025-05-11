@@ -9,7 +9,9 @@ class RegistryImpl(Registry):
         self.data_mappers: dict[type[UowedEntity], DataMapper] = {}
 
     def register_mapper(self, entity: type[UowedEntity], mapper: DataMapper) -> None:
-        self.data_mappers[type[UowedEntity]] = mapper
+        self.data_mappers[entity] = mapper # ЧЕКНИ РЕПУ ДИМЫ И СКАЖИ ЕМУ
+        print(f"i have registered mapper for entity: {entity}")
+        print(self.data_mappers)
 
     def get_mapper(self, entity: type[UowedEntity]) -> DataMapper:
         mapper = self.data_mappers[entity]

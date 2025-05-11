@@ -8,6 +8,7 @@ from src.application.commands.auth.use_cases import (
     RefreshAccessTokenUseCase
     )
 from src.application.queries.posts import GetPostsUseCase
+from src.application.commands.pages.use_cases import AddPageUseCase
 
 
 class HandlersProvider(Provider):
@@ -19,4 +20,5 @@ class HandlersProvider(Provider):
     get_current_user_use_case = provide(GetCurrentUserUseCase)
     refresh_access_token_use_case = provide(RefreshAccessTokenUseCase)
     get_posts_use_case = provide(GetPostsUseCase)
+    add_page_use_case = provide(AddPageUseCase)
 

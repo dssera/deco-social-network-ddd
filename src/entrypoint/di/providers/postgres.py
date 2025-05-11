@@ -16,16 +16,12 @@ from src.infrastructure.postgres.protocols.registry import Registry
 from src.infrastructure.postgres.registry import RegistryImpl
 from src.infrastructure.postgres.protocols.data_mapper import DataMapper
 from src.infrastructure.postgres.gateways.mappers.page_data_mapper import PageDataMapper
+from src.infrastructure.postgres.gateways.mappers.post_data_mapper import PostDataMapper
+from src.infrastructure.postgres.gateways.mappers.user_data_mapper import UserDataMapper
 from src.domain.pages.entities.page import Page
 from src.infrastructure.postgres.unit_of_work import UnitOfWorkImpl
-from src.domain.pages.repositories.page_repository import PageRepository
-from src.infrastructure.postgres.gateways.repositories.page_repository import PageRepositoryImpl
-from src.domain.auth.repositories.user_repository import UserRepository
-from src.infrastructure.postgres.gateways.repositories.user_repository import UserRepositoryImpl
-from src.domain.auth.services.hasher_service import HasherService
-from src.infrastructure.services.auth.hasher_service import HasherServiceImpl
-from src.domain.auth.services.jwt_service import JwtService
-from src.infrastructure.services.auth.jwt_service import JwtServiceImpl
+from src.domain.auth.entities.user import User
+from src.domain.posts.entities.post import Post
 
 
 class PostgresDatabaseProvider(Provider):
@@ -74,14 +70,34 @@ class PostgresDatabaseProvider(Provider):
     @provide(scope=Scope.REQUEST)
     def provide_registry(
         self, 
-        page_data_mapper: DataMapper[Page]
+        page_data_mapper: DataMapper[Page],
+        post_data_mapper: DataMapper[Post],
+        user_data_mapper: DataMapper[User],
     ) -> Registry:
         registry = RegistryImpl() 
         registry.register_mapper(Page, page_data_mapper)
+        registry.register_mapper(Post, post_data_mapper)
+        registry.register_mapper(User, user_data_mapper)
+
+        return registry
 
     @provide(scope=Scope.REQUEST)
     def provide_requisite_data_mapper(
         self, 
-        session: AsyncSession
+        session: AsyncSession,
     ) -> DataMapper[Page]:
         return PageDataMapper(session)
+    
+    @provide(scope=Scope.REQUEST)
+    def provide_post_data_mapper(
+        self, 
+        session: AsyncSession,
+    ) -> DataMapper[Post]:
+        return PostDataMapper(session)
+    
+    @provide(scope=Scope.REQUEST)
+    def provide_user_data_mapper(
+        self, 
+        session: AsyncSession,
+    ) -> DataMapper[User]:
+        return UserDataMapper(session)

@@ -9,7 +9,7 @@ from ..value_objects import RoleEnum
 class User(UowedEntity[UUID]):
     def __init__(
             self, 
-            user_id: UUID,
+            id: UUID,
             uow: UnitOfWork, 
             username: str,
             password: str,
@@ -18,12 +18,14 @@ class User(UowedEntity[UUID]):
             email: str | None,
             tg_nickname: str | None,
             ) -> None:
-        super().__init__(uow, user_id)
+        super().__init__(uow, id)
         self.username=username
         self.password=password
         self.unblock_date=unblock_date
         self.role=role
         self.email = email
         self.tg_nickname = tg_nickname
-        self.mark_new()
+        # self.mark_new()
+
+    # create another method that will mark User as new (self.mark_new())
     

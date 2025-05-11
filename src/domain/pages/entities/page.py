@@ -8,7 +8,7 @@ from src.domain.common.uowed import UowedEntity
 class Page(UowedEntity[UUID]):
     def __init__(
             self, 
-            page_id: UUID,
+            id: UUID,
             uow: UnitOfWork, 
             name: str,
             about: str,
@@ -16,7 +16,7 @@ class Page(UowedEntity[UUID]):
             user_id: int,   
             unblock_date: datetime | None = None,
             ) -> None:
-        super().__init__(uow, page_id)
+        super().__init__(uow, id)
         self.name=name
         self.about=about
         self.is_private=is_private
