@@ -1,5 +1,6 @@
 from typing import Protocol, List
 from abc import abstractmethod
+from uuid import UUID
 
 
 from ..entities.post import Post
@@ -22,4 +23,11 @@ class PostRepository(Protocol):
         # requested_in: bool | None = None,
         # created_at_asc: bool = False,
         ) -> List[Post] | None:
+        raise NotImplementedError("Method must be implemented by subclasses")
+    
+    @abstractmethod
+    async def get_one_or_none(
+        self, 
+        post_id: UUID
+        ) -> Post | None:
         raise NotImplementedError("Method must be implemented by subclasses")

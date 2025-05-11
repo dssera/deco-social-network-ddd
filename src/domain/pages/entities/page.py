@@ -22,5 +22,18 @@ class Page(UowedEntity[UUID]):
         self.is_private=is_private
         self.user_id=user_id
         self.unblock_date=unblock_date
-        self.mark_new()
-    
+        
+    @classmethod
+    def create_new(
+        cls,
+        id: UUID,
+        uow: UnitOfWork, 
+        name: str,
+        about: str,
+        is_private: bool,
+        user_id: int,   
+        unblock_date: datetime | None = None,
+    ) -> "Page":
+        instance = cls(id, uow, name, about, is_private, user_id, unblock_date)
+        instance.mark_new()
+        return instance

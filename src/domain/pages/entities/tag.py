@@ -14,3 +14,14 @@ class Tag(UowedEntity[UUID]):
         super().__init__(uow, id)
         self.name=name
         self.mark_new()
+
+    @classmethod
+    def create_new(
+        cls,
+        id: UUID,
+        uow: UnitOfWork, 
+        name: str,
+    ) -> "Tag":
+        instance = cls(id, uow, name)
+        instance.mark_new()
+        return instance

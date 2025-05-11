@@ -27,5 +27,19 @@ class User(UowedEntity[UUID]):
         self.tg_nickname = tg_nickname
         # self.mark_new()
 
-    # create another method that will mark User as new (self.mark_new())
+    @classmethod
+    def create_new(
+        cls,
+        id: UUID,
+        uow: UnitOfWork, 
+        username: str,
+        password: str,
+        unblock_date: datetime,
+        role: RoleEnum,
+        email: str | None,
+        tg_nickname: str | None,
+    ) -> "User":
+        instance = cls(id, uow, username, password, unblock_date, role, email, tg_nickname)
+        instance.mark_new()
+        return instance
     

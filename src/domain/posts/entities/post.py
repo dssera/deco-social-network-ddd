@@ -23,5 +23,18 @@ class Post(UowedEntity[UUID]):
         self.created_at=created_at
         self.page_id = page_id
         self.page = page
-        self.mark_new()
-    
+
+    @classmethod
+    def create_new(
+        cls,
+        id: UUID,
+        uow: UnitOfWork, 
+        title: str,
+        body: str,
+        created_at: datetime,
+        page_id: UUID,
+        page: Page | None = None
+    ) -> "Post":
+        instance = cls(id, uow, title, body, created_at, page_id, page)
+        instance.mark_new()
+        return instance
